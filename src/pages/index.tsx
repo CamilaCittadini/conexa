@@ -1,4 +1,5 @@
 import { CharacterCard } from '@/components/card/CharacterCard';
+import { Grid } from '@/components/grid/Grid';
 import { getCharacters } from '@/services/characters';
 import { Character } from '@/services/interfaces';
 import React from 'react';
@@ -8,10 +9,9 @@ interface HomePageProps {
 }
 
 const HomePage = ({ charactersList }: HomePageProps) => {
-  console.log(charactersList);
   return (
-    <div className="grid grid-cols-2 w-full gap-5">
-      <div className="flex flex-col items-center justify-center gap-4 w-full overflow-scroll">
+    <Grid.Root colsNumber={2}>
+      <Grid.Column>
         {charactersList.map(({ id, name, status, gender, species, image }) => (
           <CharacterCard
             key={id}
@@ -22,8 +22,8 @@ const HomePage = ({ charactersList }: HomePageProps) => {
             image={image}
           />
         ))}
-      </div>
-      <div className="flex flex-col items-center gap-4 w-full bg-red">
+      </Grid.Column>
+      <Grid.Column>
         {charactersList.map(({ id, name, status, gender, species, image }) => (
           <CharacterCard
             key={id}
@@ -34,8 +34,8 @@ const HomePage = ({ charactersList }: HomePageProps) => {
             image={image}
           />
         ))}
-      </div>
-    </div>
+      </Grid.Column>
+    </Grid.Root>
   );
 };
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Card } from './Card';
+import { Character } from '@/services/interfaces';
 
 const CharacterCard = ({
   image,
@@ -7,13 +8,7 @@ const CharacterCard = ({
   gender,
   status,
   species,
-}: {
-  image: string;
-  name: string;
-  gender: string;
-  status: string;
-  species: string;
-}) => {
+}: Pick<Character, 'image' | 'name' | 'gender' | 'status' | 'species'>) => {
   return (
     <Card.Root>
       <Card.Image
