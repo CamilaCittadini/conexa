@@ -104,7 +104,7 @@ const CharactersProvider = ({
       return;
     }
     if (id === selectedCharacters.characterTwo) {
-      setSelectedCharacters((prev) => ({ ...prev, characterOne: null }));
+      setSelectedCharacters((prev) => ({ ...prev, characterTwo: null }));
       return;
     }
     setSelectedCharacters((prev) => ({ ...prev, characterTwo: id }));

@@ -19,15 +19,28 @@ const CharactersGrid = ({ gridId }: CharactersGridProps) => {
     hasNextPage,
     handleSelectCharactersOne,
     handleSelectCharactersTwo,
+    selectedCharacters,
   } = useCharacters();
 
-  const onClickSelector: Record<GridIdsEnum, (id: number) => void> = {
-    charactersOne: (id: number) => handleSelectCharactersOne(id),
-    charactersTwo: (id: number) => handleSelectCharactersTwo(id),
+  const onClickSelector: Record<
+    GridIdsEnum,
+    { onClick: (id: number) => void; selected: (id: number) => boolean }
+  > = {
+    charactersOne: {
+      onClick: (id: number) => handleSelectCharactersOne(id),
+      selected: (id: number) => selectedCharacters.characterOne === id,
+    },
+    charactersTwo: {
+      onClick: (id: number) => handleSelectCharactersTwo(id),
+      selected: (id: number) => selectedCharacters.characterTwo === id,
+    },
   };
 
   return (
-    <div id={gridId} className="h-[800px] overflow-auto flex flex-col">
+    <div
+      id={gridId}
+      className="h-[800px] w-full overflow-auto flex flex-col no-scrollbar"
+    >
       <InfiniteScroll
         dataLength={characters.length}
         next={fetchNextPage}
@@ -38,13 +51,15 @@ const CharactersGrid = ({ gridId }: CharactersGridProps) => {
         <Grid>
           {characters.map(({ id, name, status, gender, species, image }) => (
             <CharacterCard
+              selected={onClickSelector[gridId].selected(id)}
+              id={id}
               key={id}
               name={name}
               status={status}
               gender={gender}
               species={species}
               image={image}
-              onClick={() => onClickSelector[gridId](id)}
+              onClick={() => onClickSelector[gridId].onClick(id)}
             />
           ))}
         </Grid>

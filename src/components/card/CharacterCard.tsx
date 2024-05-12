@@ -3,11 +3,16 @@ import { Card } from './Card';
 import { Character } from '@/services/interfaces';
 
 interface CharacterCardProps
-  extends Pick<Character, 'image' | 'name' | 'gender' | 'status' | 'species'> {
+  extends Pick<
+    Character,
+    'id' | 'image' | 'name' | 'gender' | 'status' | 'species'
+  > {
   onClick: () => void;
+  selected: boolean;
 }
 
 const CharacterCard = ({
+  selected,
   image,
   name,
   gender,
@@ -16,13 +21,13 @@ const CharacterCard = ({
   onClick,
 }: CharacterCardProps) => {
   return (
-    <Card.Root onClick={onClick}>
+    <Card.Root selected={selected} onClick={onClick}>
       <Card.Image src={image} alt={name} />
       <Card.Content>
         <Card.Title>{name}</Card.Title>
-        <Card.Chip>{gender}</Card.Chip>
-        <Card.Chip>{status}</Card.Chip>
-        <Card.Chip>{species}</Card.Chip>
+        <Card.Chip item="Gender" content={gender} />
+        <Card.Chip item="Status" content={status} />
+        <Card.Chip item="Species" content={species} />
       </Card.Content>
     </Card.Root>
   );

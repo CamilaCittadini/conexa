@@ -1,7 +1,7 @@
 import React from 'react';
 import { CharactersGrid, GridIdsEnum } from '@/components/grid/CharactersGrid';
 import { EpisodesGrid } from '@/components/grid/EpisodesGrid';
-import { Grid } from '@/components/grid/Grid';
+import { Grid, GridType } from '@/components/grid/Grid';
 import { CharactersProvider } from '@/contexts/charactersProvider';
 import { getCharacters } from '@/services/characters';
 import { Character } from '@/services/interfaces';
@@ -20,11 +20,13 @@ const HomePage = ({
       initialCharacters={initialCharactersList}
       totalCharacters={totalCharacters}
     >
-      <Grid>
-        <CharactersGrid gridId={GridIdsEnum.charactersOne} />
-        <CharactersGrid gridId={GridIdsEnum.charactersTwo} />
+      <div className="flex flex-col items-center justify-center gap-4">
+        <Grid type={GridType.container}>
+          <CharactersGrid gridId={GridIdsEnum.charactersOne} />
+          <CharactersGrid gridId={GridIdsEnum.charactersTwo} />
+        </Grid>
         <EpisodesGrid />
-      </Grid>
+      </div>
     </CharactersProvider>
   );
 };

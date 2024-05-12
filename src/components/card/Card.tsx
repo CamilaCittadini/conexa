@@ -1,7 +1,9 @@
 import React, { HTMLAttributes } from 'react';
 import { CustomImage } from '../image/CustomImage';
+import classNames from 'classnames';
 
 interface CardProps extends HTMLAttributes<HTMLButtonElement> {
+  selected: boolean;
   children: React.ReactNode;
 }
 
@@ -13,11 +15,17 @@ interface ContentProps extends HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode;
 }
 
-const Card = ({ children, ...rest }: CardProps) => {
+const Card = ({ children, selected, ...rest }: CardProps) => {
   return (
     <button
       {...rest}
-      className="flex flex-col min-h-72 border rounded-lg w-full max-w-80 hover:shadow-2xl transition-all duration-500"
+      className={classNames(
+        'flex flex-col min-h-72 border-4 rounded-lg w-full hover:shadow-2xl transition-all duration-500',
+        {
+          'bg-slate-200 border-green-600': selected,
+          'border-green-100': !selected,
+        }
+      )}
     >
       {children}
     </button>
@@ -25,15 +33,28 @@ const Card = ({ children, ...rest }: CardProps) => {
 };
 
 const Title = ({ children, ...rest }: TitleProps) => {
-  return <h2 {...rest}>{children}</h2>;
+  return (
+    <h2 className="font-semibold" {...rest}>
+      {children}
+    </h2>
+  );
 };
 
 const Content = ({ children, ...rest }: ContentProps) => {
-  return <div {...rest}>{children}</div>;
+  return (
+    <div className="p-4 w-full text-left" {...rest}>
+      {children}
+    </div>
+  );
 };
 
-const Chip = ({ children, ...rest }: ContentProps) => {
-  return <div {...rest}>{children}</div>;
+const Chip = ({ item, content }: { item: string; content: string }) => {
+  return (
+    <p>
+      <span className="text-xs text-gray-500 uppercase">{`${item}: `}</span>
+      <span className="">{content}</span>
+    </p>
+  );
 };
 
 export { Card };
