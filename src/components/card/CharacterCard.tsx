@@ -8,9 +8,13 @@ const CharacterCard = ({
   gender,
   status,
   species,
-}: Pick<Character, 'image' | 'name' | 'gender' | 'status' | 'species'>) => {
+  onClick,
+}: { onClick: () => void } & Pick<
+  Character,
+  'id' | 'image' | 'name' | 'gender' | 'status' | 'species'
+>) => {
   return (
-    <Card.Root>
+    <Card.Root onClick={onClick}>
       <Card.Image
         src={image}
         alt={name}

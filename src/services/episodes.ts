@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { Episode, Info } from './interfaces';
+import { Episode } from './interfaces';
 
-const baseUrl = process.env.BASE_URL;
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 export const getEpisodes = async ({
   page,
@@ -12,7 +12,7 @@ export const getEpisodes = async ({
   name?: string;
   episode?: string;
 }) => {
-  return await axios.get<Info<Episode[]>>(`${baseUrl}/episode`, {
+  return await axios.get<Episode[]>(`${baseUrl}/episode`, {
     params: {
       page,
       ...(name && { name }),
@@ -28,7 +28,7 @@ export const getSingleEpisode = async ({
   page: number;
   id: string;
 }) => {
-  return await axios.get<Info<Episode>>(`${baseUrl}/location/${id}`, {
+  return await axios.get<Episode>(`${baseUrl}/episode/${id}`, {
     method: 'GET',
     params: {
       page,
@@ -36,16 +36,6 @@ export const getSingleEpisode = async ({
   });
 };
 
-export const getMultipleEpisodes = async ({
-  page,
-  id,
-}: {
-  page: number;
-  id: string[];
-}) => {
-  return await axios.get<Info<Episode[]>>(`${baseUrl}/location/${id}`, {
-    params: {
-      page,
-    },
-  });
+export const getMultipleEpisodes = async ({ ids }: { ids: string[] }) => {
+  return await axios.get<Episode[]>(`${baseUrl}/episode/${ids}`);
 };

@@ -1,11 +1,17 @@
-import React from 'react';
+import React, { HTMLAttributes } from 'react';
 import { CustomImage } from '../image/CustomImage';
 
-const Card = ({ children }: { children: React.ReactNode }) => {
+const Card = ({
+  children,
+  ...rest
+}: HTMLAttributes<HTMLButtonElement> & { children: React.ReactNode }) => {
   return (
-    <div className="flex flex-col min-h-72 border rounded-lg w-full max-w-80 hover:shadow-2xl transition-all duration-500">
+    <button
+      {...rest}
+      className="flex flex-col min-h-72 border rounded-lg w-full max-w-80 hover:shadow-2xl transition-all duration-500"
+    >
       {children}
-    </div>
+    </button>
   );
 };
 

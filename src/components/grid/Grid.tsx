@@ -1,24 +1,22 @@
+import classNames from 'classnames';
 import React from 'react';
 
 const Grid = ({
-  colsNumber,
   children,
+  type = 'characters',
 }: {
-  colsNumber: number;
   children: React.ReactNode;
+  type?: 'characters' | 'episodes';
 }) => {
-  return <div className={`grid grid-cols-${colsNumber} gap-4`}>{children}</div>;
-};
-
-const Column = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="flex flex-col items-center  max-h-[100vh] overflow-y-scroll">
-      <div className="h-full w-full">{children}</div>
+    <div
+      className={classNames('grid grid-cols-2 gap-4 justify-items-center', {
+        '!grid-cols-3': type === 'episodes',
+      })}
+    >
+      {children}
     </div>
   );
 };
 
 export { Grid };
-
-Grid.Root = Grid;
-Grid.Column = Column;

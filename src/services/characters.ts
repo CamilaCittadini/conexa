@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { Character, Info } from './interfaces';
 
-const baseUrl = process.env.BASE_URL;
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
 export const getCharacters = async ({
   page,
