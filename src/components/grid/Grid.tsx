@@ -15,7 +15,7 @@ const Grid = ({ children, type = GridType.characters }: GridProps) => {
   return (
     <div
       className={classNames(
-        'grid gap-4 justify-items-center w-full bg-white rounded-lg border p-4',
+        'grid gap-4 justify-items-center w-full bg-white rounded-lg p-4',
         {
           'grid-cols-2': type === GridType.container,
           'grid-cols-1 lg:grid-cols-2': type === GridType.characters,

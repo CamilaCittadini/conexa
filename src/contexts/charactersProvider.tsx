@@ -1,14 +1,19 @@
 import { getCharacters } from '@/services/characters';
 import { getMultipleEpisodes } from '@/services/episodes';
-import { Character, Episode } from '@/services/interfaces';
+import { Character, Episode, Info } from '@/services/interfaces';
 import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import React, {
   createContext,
+  useCallback,
   useContext,
-  useEffect,
   useMemo,
   useState,
 } from 'react';
+import {
+  determineEpisodesData,
+  findOnlyEpisodesIds,
+  findSharedEpisodesIds,
+} from './utils';
 
 const CharactersContext = createContext<{
   characters: Character[];
@@ -40,143 +45,86 @@ const CharactersContext = createContext<{
 });
 
 const CharactersProvider = ({
-  initialCharacters,
-  totalCharacters,
+  initialData,
   children,
 }: {
-  initialCharacters: Character[];
-  totalCharacters: number;
+  initialData: Info<Character[]>;
   children: React.ReactNode;
 }) => {
-  const [characters, setCharacters] = useState<Character[]>(initialCharacters);
+  const totalCharacters = initialData.info?.count || 20;
   const [selectedCharacters, setSelectedCharacters] = useState<{
     characterOne: number | null;
     characterTwo: number | null;
   }>({ characterOne: null, characterTwo: null });
 
-  const {
-    data,
-    fetchNextPage,
-    isSuccess,
-    hasNextPage,
-    isFetching,
-    isFetchingNextPage,
-  } = useInfiniteQuery({
-    queryKey: ['get-infinite-characters'],
-    queryFn: ({ pageParam }) => getCharacters({ page: pageParam }),
-    initialPageParam: 1,
-    getNextPageParam: (lastPage, pages, currentPageParam) => {
-      const totalPages = lastPage?.data?.info?.pages || 1;
-      if (currentPageParam < totalPages) {
-        const nextPage = currentPageParam + 1;
-        return nextPage;
+  const { data, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage } =
+    useInfiniteQuery({
+      queryKey: ['get-infinite-characters'],
+      queryFn: ({ pageParam }) => getCharacters({ page: pageParam }),
+      initialPageParam: 1,
+      getNextPageParam: (lastPage, allPages, currentPageParam) => {
+        const totalPages = lastPage?.data?.info?.pages || 1;
+
+        if (currentPageParam < totalPages) {
+          const nextPage = currentPageParam + 1;
+          return nextPage;
+        }
+        return undefined;
+      },
+    });
+
+  const characters = useMemo(() => {
+    return data
+      ? data.pages.flatMap((page) => page.data.results as Character[])
+      : (initialData.results as Character[]);
+  }, [data, initialData]);
+
+  const handleSelectCharactersOne = useCallback(
+    (id: number) => {
+      if (id === selectedCharacters.characterTwo) {
+        return;
       }
-      return undefined;
+      if (id === selectedCharacters.characterOne) {
+        setSelectedCharacters((prev) => ({ ...prev, characterOne: null }));
+        return;
+      }
+      setSelectedCharacters((prev) => ({ ...prev, characterOne: id }));
     },
-  });
+    [selectedCharacters]
+  );
 
-  useEffect(() => {
-    if (isSuccess) {
-      const newPages = data.pages;
-      if (newPages.length) {
-        const newCharacters =
-          newPages.flatMap(
-            (pagesData) => pagesData.data.results as Character[]
-          ) || [];
-        setCharacters(newCharacters);
+  const handleSelectCharactersTwo = useCallback(
+    (id: number) => {
+      if (id === selectedCharacters.characterOne) {
+        return;
       }
-    }
-  }, [isSuccess, data]);
-
-  const handleSelectCharactersOne = (id: number) => {
-    if (id === selectedCharacters.characterTwo) {
-      return;
-    }
-    if (id === selectedCharacters.characterOne) {
-      setSelectedCharacters((prev) => ({ ...prev, characterOne: null }));
-      return;
-    }
-    setSelectedCharacters((prev) => ({ ...prev, characterOne: id }));
-  };
-
-  const handleSelectCharactersTwo = (id: number) => {
-    if (id === selectedCharacters.characterOne) {
-      return;
-    }
-    if (id === selectedCharacters.characterTwo) {
-      setSelectedCharacters((prev) => ({ ...prev, characterTwo: null }));
-      return;
-    }
-    setSelectedCharacters((prev) => ({ ...prev, characterTwo: id }));
-  };
-
-  const findCharacterEpisodes = (characterId: number) => {
-    const foundEpisodes =
-      characters.find((char) => char.id === characterId)?.episode || [];
-    return foundEpisodes;
-  };
-
-  const findSharedEpisodes = (
-    characterOneId: number,
-    characterTwoId: number
-  ) => {
-    const charOneEpisodes = findCharacterEpisodes(characterOneId);
-    const charTwoEpisodes = findCharacterEpisodes(characterTwoId);
-
-    const sharedEpisodes =
-      charOneEpisodes?.filter((episode) =>
-        charTwoEpisodes?.includes(episode)
-      ) || [];
-    return sharedEpisodes;
-  };
-
-  const extractEpisodeId = (url: string) => {
-    const urlFragments = url.split('/');
-    const episodeId = urlFragments[urlFragments.length - 1];
-    return episodeId;
-  };
-
-  const mapEpisodesIds = (urls: string[]) =>
-    urls.map((url) => extractEpisodeId(url));
-
-  const findSharedEpisodesIds = (
-    charIdOne: number | null,
-    charIdTwo: number | null
-  ) => {
-    if (charIdOne && charIdTwo) {
-      const sharedEpisodesArray = findSharedEpisodes(charIdOne, charIdTwo);
-      const episodesIds = mapEpisodesIds(sharedEpisodesArray);
-      return episodesIds;
-    }
-    return [];
-  };
-
-  const findOnlyEpisodesIds = (characterId: number | null) => {
-    if (characterId) {
-      const characterEpisodes = findCharacterEpisodes(characterId);
-      const episodesIds = mapEpisodesIds(characterEpisodes);
-      return episodesIds;
-    }
-    return [];
-  };
+      if (id === selectedCharacters.characterTwo) {
+        setSelectedCharacters((prev) => ({ ...prev, characterTwo: null }));
+        return;
+      }
+      setSelectedCharacters((prev) => ({ ...prev, characterTwo: id }));
+    },
+    [selectedCharacters]
+  );
 
   const episodesCharacterOneIds = useMemo(
-    () => findOnlyEpisodesIds(selectedCharacters.characterOne),
-    [selectedCharacters.characterOne]
+    () => findOnlyEpisodesIds(selectedCharacters.characterOne, characters),
+    [selectedCharacters.characterOne, characters]
   );
 
   const episodesCharacterTwoIds = useMemo(
-    () => findOnlyEpisodesIds(selectedCharacters.characterTwo),
-    [selectedCharacters.characterTwo]
+    () => findOnlyEpisodesIds(selectedCharacters.characterTwo, characters),
+    [selectedCharacters.characterTwo, characters]
   );
 
   const sharedEpisodesIds = useMemo(
     () =>
       findSharedEpisodesIds(
         selectedCharacters.characterOne,
-        selectedCharacters.characterTwo
+        selectedCharacters.characterTwo,
+        characters
       ),
-    [selectedCharacters.characterOne, selectedCharacters.characterTwo]
+    [selectedCharacters, characters]
   );
 
   const { data: episodesCharOneData } = useQuery({
@@ -197,18 +145,18 @@ const CharactersProvider = ({
     enabled: !!sharedEpisodesIds.length,
   });
 
-  const determineEpisodesData = (data: Episode[] | undefined) => {
-    if (data) {
-      if (Array.isArray(data)) {
-        return data;
-      }
-      return [data];
-    }
-    return [];
-  };
-  const characterOneEpisodes = determineEpisodesData(episodesCharOneData?.data);
-  const characterTwoEpisodes = determineEpisodesData(episodesCharTwoData?.data);
-  const sharedEpisodes = determineEpisodesData(sharedEpisodesData?.data);
+  const characterOneEpisodes = useMemo(
+    () => determineEpisodesData(episodesCharOneData?.data),
+    [episodesCharOneData]
+  );
+  const characterTwoEpisodes = useMemo(
+    () => determineEpisodesData(episodesCharTwoData?.data),
+    [episodesCharTwoData]
+  );
+  const sharedEpisodes = useMemo(
+    () => determineEpisodesData(sharedEpisodesData?.data),
+    [sharedEpisodesData]
+  );
 
   const value = useMemo(
     () => ({

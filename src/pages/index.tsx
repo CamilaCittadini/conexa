@@ -4,22 +4,15 @@ import { EpisodesGrid } from '@/components/grid/EpisodesGrid';
 import { Grid, GridType } from '@/components/grid/Grid';
 import { CharactersProvider } from '@/contexts/charactersProvider';
 import { getCharacters } from '@/services/characters';
-import { Character } from '@/services/interfaces';
+import { Character, Info } from '@/services/interfaces';
 
 interface HomePageProps {
-  initialCharactersList: Character[];
-  totalCharacters: number;
+  initialData: Info<Character[]>;
 }
 
-const HomePage = ({
-  initialCharactersList,
-  totalCharacters,
-}: HomePageProps) => {
+const HomePage = ({ initialData }: HomePageProps) => {
   return (
-    <CharactersProvider
-      initialCharacters={initialCharactersList}
-      totalCharacters={totalCharacters}
-    >
+    <CharactersProvider initialData={initialData}>
       <div className="flex flex-col items-center justify-center gap-4">
         <Grid type={GridType.container}>
           <CharactersGrid gridId={GridIdsEnum.charactersOne} />
@@ -36,12 +29,12 @@ export default HomePage;
 export async function getServerSideProps() {
   try {
     const res = await getCharacters({ page: 1 });
-    const {
-      data: { results, info },
-    } = res;
+    const { data } = res;
 
     return {
-      props: { initialCharactersList: results, totalCharacters: info?.count },
+      props: {
+        initialData: data,
+      },
     };
   } catch (error) {
     return {

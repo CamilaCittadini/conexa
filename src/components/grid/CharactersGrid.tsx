@@ -1,8 +1,9 @@
 import React from 'react';
-import { Grid } from './Grid';
+import { Grid, GridType } from './Grid';
 import { CharacterCard } from '../card/CharacterCard';
 import { useCharacters } from '@/contexts/charactersProvider';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import { CardSkeleton } from '../card/CardSkeleton';
 
 export enum GridIdsEnum {
   charactersOne = 'charactersOne',
@@ -51,7 +52,12 @@ const CharactersGrid = ({ gridId }: CharactersGridProps) => {
         dataLength={characters.length}
         next={fetchNextPage}
         hasMore={hasNextPage}
-        loader={<h4>Loading...</h4>} // TODO: replace with a skeleton row
+        loader={
+          <Grid type={GridType.characters}>
+            <CardSkeleton />
+            <CardSkeleton />
+          </Grid>
+        } // TODO: replace with a skeleton row
         scrollableTarget={gridId}
       >
         <Grid>
