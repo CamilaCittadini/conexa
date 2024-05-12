@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid } from './Grid';
+import { Grid, GridType } from './Grid';
 import { useCharacters } from '@/contexts/charactersProvider';
 
 const EpisodesGrid = () => {
@@ -7,7 +7,7 @@ const EpisodesGrid = () => {
     useCharacters();
 
   return (
-    <Grid type="episodes">
+    <Grid type={GridType.episodes}>
       <div>
         {!!characterOneEpisodes.length &&
           characterOneEpisodes?.map((episode) => (

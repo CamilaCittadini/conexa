@@ -4,7 +4,15 @@ import { CharacterCard } from '../card/CharacterCard';
 import { useCharacters } from '@/contexts/charactersProvider';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
-const CharactersGrid = ({ gridId }: { gridId: string }) => {
+export enum GridIdsEnum {
+  charactersOne = 'charactersOne',
+  charactersTwo = 'charactersTwo',
+}
+interface CharactersGridProps {
+  gridId: GridIdsEnum;
+}
+
+const CharactersGrid = ({ gridId }: CharactersGridProps) => {
   const {
     characters,
     fetchNextPage,
@@ -12,38 +20,31 @@ const CharactersGrid = ({ gridId }: { gridId: string }) => {
     handleSelectCharactersOne,
     handleSelectCharactersTwo,
   } = useCharacters();
+
+  const onClickSelector: Record<GridIdsEnum, (id: number) => void> = {
+    charactersOne: (id: number) => handleSelectCharactersOne(id),
+    charactersTwo: (id: number) => handleSelectCharactersTwo(id),
+  };
+
   return (
-    <div
-      id={gridId}
-      style={{
-        height: 800,
-        overflow: 'auto',
-        display: 'flex',
-        flexDirection: 'column',
-      }}
-    >
+    <div id={gridId} className="h-[800px] overflow-auto flex flex-col">
       <InfiniteScroll
         dataLength={characters.length}
         next={fetchNextPage}
         hasMore={hasNextPage}
-        loader={<h4>Loading...</h4>}
+        loader={<h4>Loading...</h4>} // TODO: replace with a skeleton row
         scrollableTarget={gridId}
       >
         <Grid>
           {characters.map(({ id, name, status, gender, species, image }) => (
             <CharacterCard
-              id={id}
               key={id}
               name={name}
               status={status}
               gender={gender}
               species={species}
               image={image}
-              onClick={
-                gridId === 'charactersOne'
-                  ? () => handleSelectCharactersOne(id)
-                  : () => handleSelectCharactersTwo(id)
-              }
+              onClick={() => onClickSelector[gridId](id)}
             />
           ))}
         </Grid>

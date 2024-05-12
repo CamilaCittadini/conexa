@@ -1,17 +1,21 @@
 import classNames from 'classnames';
 import React from 'react';
 
-const Grid = ({
-  children,
-  type = 'characters',
-}: {
+export enum GridType {
+  characters = 'characters',
+  episodes = 'episodes',
+}
+interface GridProps {
   children: React.ReactNode;
-  type?: 'characters' | 'episodes';
-}) => {
+  type?: GridType;
+}
+
+const Grid = ({ children, type = GridType.characters }: GridProps) => {
   return (
     <div
-      className={classNames('grid grid-cols-2 gap-4 justify-items-center', {
-        '!grid-cols-3': type === 'episodes',
+      className={classNames('grid gap-4 justify-items-center', {
+        'grid-cols-2': type === GridType.characters,
+        'grid-cols-3': type === GridType.episodes,
       })}
     >
       {children}

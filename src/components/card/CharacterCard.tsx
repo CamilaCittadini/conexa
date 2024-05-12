@@ -2,6 +2,11 @@ import React from 'react';
 import { Card } from './Card';
 import { Character } from '@/services/interfaces';
 
+interface CharacterCardProps
+  extends Pick<Character, 'image' | 'name' | 'gender' | 'status' | 'species'> {
+  onClick: () => void;
+}
+
 const CharacterCard = ({
   image,
   name,
@@ -9,21 +14,12 @@ const CharacterCard = ({
   status,
   species,
   onClick,
-}: { onClick: () => void } & Pick<
-  Character,
-  'id' | 'image' | 'name' | 'gender' | 'status' | 'species'
->) => {
+}: CharacterCardProps) => {
   return (
     <Card.Root onClick={onClick}>
-      <Card.Image
-        src={image}
-        alt={name}
-        className="object-cover rounded-t-md"
-      />
-      <Card.Content className="p-4">
-        <Card.Title className="font-semibold text-center underline">
-          {name}
-        </Card.Title>
+      <Card.Image src={image} alt={name} />
+      <Card.Content>
+        <Card.Title>{name}</Card.Title>
         <Card.Chip>{gender}</Card.Chip>
         <Card.Chip>{status}</Card.Chip>
         <Card.Chip>{species}</Card.Chip>

@@ -1,10 +1,10 @@
-import { CharactersGrid } from '@/components/grid/CharactersGrid';
+import React from 'react';
+import { CharactersGrid, GridIdsEnum } from '@/components/grid/CharactersGrid';
 import { EpisodesGrid } from '@/components/grid/EpisodesGrid';
 import { Grid } from '@/components/grid/Grid';
 import { CharactersProvider } from '@/contexts/charactersProvider';
 import { getCharacters } from '@/services/characters';
 import { Character } from '@/services/interfaces';
-import React from 'react';
 
 interface HomePageProps {
   initialCharactersList: Character[];
@@ -21,8 +21,8 @@ const HomePage = ({
       totalCharacters={totalCharacters}
     >
       <Grid>
-        <CharactersGrid gridId="charactersOne" />
-        <CharactersGrid gridId="charactersTwo" />
+        <CharactersGrid gridId={GridIdsEnum.charactersOne} />
+        <CharactersGrid gridId={GridIdsEnum.charactersTwo} />
         <EpisodesGrid />
       </Grid>
     </CharactersProvider>
@@ -32,12 +32,21 @@ const HomePage = ({
 export default HomePage;
 
 export async function getServerSideProps() {
-  const res = await getCharacters({ page: 0 });
-  const {
-    data: { results, info },
-  } = res;
+  try {
+    const res = await getCharacters({ page: 1 });
+    const {
+      data: { results, info },
+    } = res;
 
-  return {
-    props: { initialCharactersList: results, totalCharacters: info?.count },
-  };
+    return {
+      props: { initialCharactersList: results, totalCharacters: info?.count },
+    };
+  } catch (error) {
+    return {
+      redirect: {
+        destination: '/500',
+        permanent: false,
+      },
+    };
+  }
 }

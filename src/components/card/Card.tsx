@@ -1,10 +1,19 @@
 import React, { HTMLAttributes } from 'react';
 import { CustomImage } from '../image/CustomImage';
 
-const Card = ({
-  children,
-  ...rest
-}: HTMLAttributes<HTMLButtonElement> & { children: React.ReactNode }) => {
+interface CardProps extends HTMLAttributes<HTMLButtonElement> {
+  children: React.ReactNode;
+}
+
+interface TitleProps extends HTMLAttributes<HTMLDivElement> {
+  children: string;
+}
+
+interface ContentProps extends HTMLAttributes<HTMLDivElement> {
+  children: React.ReactNode;
+}
+
+const Card = ({ children, ...rest }: CardProps) => {
   return (
     <button
       {...rest}
@@ -15,24 +24,15 @@ const Card = ({
   );
 };
 
-const Title = ({
-  children,
-  ...rest
-}: React.HTMLAttributes<HTMLDivElement> & { children: string }) => {
+const Title = ({ children, ...rest }: TitleProps) => {
   return <h2 {...rest}>{children}</h2>;
 };
 
-const Content = ({
-  children,
-  ...rest
-}: React.HTMLAttributes<HTMLDivElement> & { children: React.ReactNode }) => {
+const Content = ({ children, ...rest }: ContentProps) => {
   return <div {...rest}>{children}</div>;
 };
 
-const Chip = ({
-  children,
-  ...rest
-}: React.HTMLAttributes<HTMLDivElement> & { children: React.ReactNode }) => {
+const Chip = ({ children, ...rest }: ContentProps) => {
   return <div {...rest}>{children}</div>;
 };
 
