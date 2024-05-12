@@ -9,6 +9,7 @@ interface CharacterCardProps
   > {
   onClick: () => void;
   selected: boolean;
+  disabled: boolean;
 }
 
 const CharacterCard = ({
@@ -19,15 +20,16 @@ const CharacterCard = ({
   status,
   species,
   onClick,
+  disabled,
 }: CharacterCardProps) => {
   return (
-    <Card.Root selected={selected} onClick={onClick}>
+    <Card.Root selected={selected} disabled={disabled} onClick={onClick}>
       <Card.Image src={image} alt={name} />
       <Card.Content>
         <Card.Title>{name}</Card.Title>
-        <Card.Chip item="Gender" content={gender} />
-        <Card.Chip item="Status" content={status} />
-        <Card.Chip item="Species" content={species} />
+        <Card.Chip item="Gender" content={gender} selected={selected} />
+        <Card.Chip item="Status" content={status} selected={selected} />
+        <Card.Chip item="Species" content={species} selected={selected} />
       </Card.Content>
     </Card.Root>
   );

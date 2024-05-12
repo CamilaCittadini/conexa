@@ -29,7 +29,7 @@ const email = process.env.EMAIL || '';
 
 const Footer = () => {
   return (
-    <div className="border-t-solid border-t bottom-0 left-0 w-full p-4 bg-blue-200">
+    <div className="border-t-solid border-t bottom-0 left-0 w-full p-4 bg-green-300">
       <div className="flex w-full items-center justify-between">
         <Link href={`mailto:${email}`}>
           <p>

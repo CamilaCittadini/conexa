@@ -22,17 +22,23 @@ const CharactersGrid = ({ gridId }: CharactersGridProps) => {
     selectedCharacters,
   } = useCharacters();
 
-  const onClickSelector: Record<
+  const characterCardConfig: Record<
     GridIdsEnum,
-    { onClick: (id: number) => void; selected: (id: number) => boolean }
+    {
+      onClick: (id: number) => void;
+      selected: (id: number) => boolean;
+      disabled: (id: number) => boolean;
+    }
   > = {
     charactersOne: {
       onClick: (id: number) => handleSelectCharactersOne(id),
       selected: (id: number) => selectedCharacters.characterOne === id,
+      disabled: (id: number) => selectedCharacters.characterTwo === id,
     },
     charactersTwo: {
       onClick: (id: number) => handleSelectCharactersTwo(id),
       selected: (id: number) => selectedCharacters.characterTwo === id,
+      disabled: (id: number) => selectedCharacters.characterOne === id,
     },
   };
 
@@ -51,7 +57,8 @@ const CharactersGrid = ({ gridId }: CharactersGridProps) => {
         <Grid>
           {characters.map(({ id, name, status, gender, species, image }) => (
             <CharacterCard
-              selected={onClickSelector[gridId].selected(id)}
+              selected={characterCardConfig[gridId].selected(id)}
+              disabled={characterCardConfig[gridId].disabled(id)}
               id={id}
               key={id}
               name={name}
@@ -59,7 +66,7 @@ const CharactersGrid = ({ gridId }: CharactersGridProps) => {
               gender={gender}
               species={species}
               image={image}
-              onClick={() => onClickSelector[gridId].onClick(id)}
+              onClick={() => characterCardConfig[gridId].onClick(id)}
             />
           ))}
         </Grid>
