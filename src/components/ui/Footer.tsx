@@ -3,6 +3,10 @@ import Link from 'next/link';
 import { GithubIcon } from '@/icons/github';
 import { LinkedinIcon } from '@/icons/linkedin';
 
+const email = process.env.NEXT_PUBLIC_EMAIL || '';
+const githubLink = process.env.NEXT_PUBLIC_GITHUB || '';
+const linkedInLink = process.env.NEXT_PUBLIC_LINKEDIN || '';
+
 type FooterLink = {
   id: string;
   label: string;
@@ -14,18 +18,16 @@ const footerLinks: FooterLink[] = [
   {
     id: 'github',
     label: 'Github',
-    link: process.env.GITHUB || '',
+    link: githubLink,
     icon: <GithubIcon className="w-6 h-6" />,
   },
   {
     id: 'linkedin',
     label: 'LinkedIn',
-    link: process.env.LINKEDIN || '',
+    link: linkedInLink,
     icon: <LinkedinIcon className="w-6 h-6" />,
   },
 ];
-
-const email = process.env.EMAIL || '';
 
 const Footer = () => {
   return (
