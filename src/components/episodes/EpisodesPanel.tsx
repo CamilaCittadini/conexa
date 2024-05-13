@@ -18,8 +18,15 @@ const EpisodesPanel = ({
       {show && (
         <div>
           <div className="p-2">
-            <h3 className="text-sm text-gray-500">Episodes featuring:</h3>
-            <h4 className="font-semibold">{characterName}</h4>
+            <h3
+              className="text-sm text-gray-500"
+              data-testid="episode-panel-title"
+            >
+              Episodes featuring:
+            </h3>
+            <h4 className="font-semibold" data-testid="episode-panel-character">
+              {characterName}
+            </h4>
           </div>
 
           <div className="border rounded-lg p-3">

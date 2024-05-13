@@ -32,7 +32,7 @@ const Footer = () => {
   return (
     <div className="text-xs lg:text-md border-t-solid border-t w-full p-4 bg-green-300">
       <div className="flex w-full items-center justify-between">
-        <Link href={`mailto:${email}`}>
+        <Link href={`mailto:${email}`} data-testid="email">
           <p>
             by <b>Camila Cittadini</b>
           </p>
@@ -42,7 +42,7 @@ const Footer = () => {
           {footerLinks.map(({ id, label, link, icon }, index) => (
             <div className="flex items-center" key={id}>
               <span className="mr-1">{icon}</span>
-              <Link href={link} target="_blank">
+              <Link href={link} target="_blank" data-testid={id}>
                 {label}
               </Link>
               {index !== footerLinks.length - 1 && (

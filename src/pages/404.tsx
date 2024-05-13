@@ -1,8 +1,8 @@
 import React from 'react';
 import { ErrorView } from '@/components';
 
-const ErrorPage = () => {
+const ErrorPage404 = () => {
   return <ErrorView />;
 };
 
-export default ErrorPage;
+export default ErrorPage404;
