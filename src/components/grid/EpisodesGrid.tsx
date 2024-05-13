@@ -1,8 +1,8 @@
 import React from 'react';
-import { Grid, GridType } from './Grid';
 import { useCharacters } from '@/contexts/charactersProvider';
+import { Character } from '@/services';
 import { EpisodesPanel } from '../episodes/EpisodesPanel';
-import { Character } from '@/services/interfaces';
+import { Grid, GridTypeEnum } from './Grid';
 
 const findCharacterName = (charactersArray: Character[], id: number | null) => {
   if (id && charactersArray.length) {
@@ -39,7 +39,7 @@ const EpisodesGrid = () => {
   }
 
   return (
-    <Grid type={GridType.episodes}>
+    <Grid type={GridTypeEnum.episodes}>
       <EpisodesPanel
         show={!!characterOneEpisodes.length}
         episodes={characterOneEpisodes}

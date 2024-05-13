@@ -1,6 +1,6 @@
 import React from 'react';
 import { EpisodesItem } from './EpisodesItem';
-import { Episode } from '@/services/interfaces';
+import { Episode } from '@/services';
 
 interface EpisodesPanelProps {
   show: boolean;

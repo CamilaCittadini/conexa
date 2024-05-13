@@ -1,7 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { GithubIcon } from '@/icons/github';
-import { LinkedinIcon } from '@/icons/linkedin';
+import { GithubIcon, LinkedinIcon } from '@/icons';
 
 const email = process.env.NEXT_PUBLIC_EMAIL || '';
 const githubLink = process.env.NEXT_PUBLIC_GITHUB || '';

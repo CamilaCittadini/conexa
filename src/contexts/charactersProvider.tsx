@@ -1,7 +1,3 @@
-import { getCharacters } from '@/services/characters';
-import { getMultipleEpisodes } from '@/services/episodes';
-import { Character, Episode, Info } from '@/services/interfaces';
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import React, {
   createContext,
   useCallback,
@@ -9,6 +5,14 @@ import React, {
   useMemo,
   useState,
 } from 'react';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import {
+  getCharacters,
+  getMultipleEpisodes,
+  Character,
+  Episode,
+  Info,
+} from '@/services';
 import {
   determineEpisodesData,
   findOnlyEpisodesIds,

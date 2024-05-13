@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card } from './Card';
-import { Character } from '@/services/interfaces';
+import { Character } from '@/services';
 
 interface CharacterCardProps
   extends Pick<

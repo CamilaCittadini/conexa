@@ -1,9 +1,8 @@
 import React from 'react';
-import { Grid, GridType } from './Grid';
-import { CharacterCard } from '../card/CharacterCard';
-import { useCharacters } from '@/contexts/charactersProvider';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { CardSkeleton } from '../card/CardSkeleton';
+import { Grid, GridTypeEnum } from './Grid';
+import { CardSkeleton, CharacterCard } from '../card';
+import { useCharacters } from '@/contexts/charactersProvider';
 
 export enum GridIdsEnum {
   charactersOne = 'charactersOne',
@@ -53,7 +52,7 @@ const CharactersGrid = ({ gridId }: CharactersGridProps) => {
         next={fetchNextPage}
         hasMore={hasNextPage}
         loader={
-          <Grid type={GridType.characters}>
+          <Grid type={GridTypeEnum.characters}>
             <CardSkeleton />
             <CardSkeleton />
           </Grid>

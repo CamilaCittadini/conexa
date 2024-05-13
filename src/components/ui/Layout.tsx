@@ -1,8 +1,8 @@
 import React from 'react';
+import classNames from 'classnames';
 import { Poppins } from 'next/font/google';
 import { Footer } from './Footer';
 import { Content } from './Content';
-import classNames from 'classnames';
 import { Header } from './Header';
 
 const poppins = Poppins({
@@ -11,7 +11,12 @@ const poppins = Poppins({
   variable: '--font-poppins',
   weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
 });
-const Layout = ({ children }: { children: React.ReactNode }) => {
+
+interface LayoutProps {
+  children: React.ReactNode;
+}
+
+const Layout = ({ children }: LayoutProps) => {
   return (
     <div
       className={classNames(

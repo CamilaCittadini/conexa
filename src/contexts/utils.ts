@@ -1,4 +1,4 @@
-import { Character, Episode } from '@/services/interfaces';
+import { Character, Episode } from '@/services';
 
 const findCharacterEpisodes = (
   characterId: number,

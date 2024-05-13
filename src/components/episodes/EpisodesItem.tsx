@@ -1,5 +1,5 @@
 import React from 'react';
-import { Episode } from '@/services/interfaces';
+import { Episode } from '@/services';
 
 type EpisodesItemProps = Pick<Episode, 'episode' | 'air_date' | 'name'>;
 
