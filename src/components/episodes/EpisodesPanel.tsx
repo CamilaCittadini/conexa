@@ -1,6 +1,5 @@
 import React from 'react';
 import { EpisodesItem } from './EpisodesItem';
-import { Grid, GridType } from '../grid/Grid';
 import { Episode } from '@/services/interfaces';
 
 interface EpisodesPanelProps {

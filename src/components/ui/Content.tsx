@@ -5,7 +5,7 @@ interface ContentProps {
 }
 
 const Content = ({ children }: ContentProps) => {
-  return <div className="w-full px-20 pt-10">{children}</div>;
+  return <div className="w-full lg:px-20 lg:pt-10">{children}</div>;
 };
 
 export { Content };

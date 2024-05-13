@@ -29,7 +29,7 @@ const email = process.env.EMAIL || '';
 
 const Footer = () => {
   return (
-    <div className="border-t-solid border-t bottom-0 left-0 w-full p-4 bg-green-300">
+    <div className="text-xs lg:text-md border-t-solid border-t w-full p-4 bg-green-300">
       <div className="flex w-full items-center justify-between">
         <Link href={`mailto:${email}`}>
           <p>
@@ -37,9 +37,9 @@ const Footer = () => {
           </p>
         </Link>
 
-        <div className="flex">
+        <div className="flex items-center justify-center">
           {footerLinks.map(({ id, label, link, icon }, index) => (
-            <div className="flex" key={id}>
+            <div className="flex items-center" key={id}>
               <span className="mr-1">{icon}</span>
               <Link href={link} target="_blank">
                 {label}

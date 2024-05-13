@@ -57,7 +57,7 @@ const CharactersGrid = ({ gridId }: CharactersGridProps) => {
             <CardSkeleton />
             <CardSkeleton />
           </Grid>
-        } // TODO: replace with a skeleton row
+        }
         scrollableTarget={gridId}
       >
         <Grid>

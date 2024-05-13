@@ -31,6 +31,12 @@ const EpisodesGrid = () => {
   );
 
   const sharedNames = `${nameCharacterOne} and ${nameCharacterTwo}`;
+  const nothingSelected =
+    !characterOneEpisodes.length && !characterTwoEpisodes.length;
+
+  if (nothingSelected) {
+    return null;
+  }
 
   return (
     <Grid type={GridType.episodes}>

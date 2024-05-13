@@ -7,7 +7,6 @@ const CustomImage = (props: ImageProps) => {
       <Image
         fill
         {...props}
-        className="object-cover"
         style={{ borderTopLeftRadius: 6, borderTopRightRadius: 6 }}
       />
     </div>

@@ -17,6 +17,9 @@ const config: Config = {
     fontFamily: {
       sans: ['var(--font-poppins)'],
     },
+    maxWidth: {
+      'max-content': '1500px',
+    },
   },
   plugins: [],
 };

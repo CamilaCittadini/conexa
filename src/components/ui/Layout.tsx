@@ -3,6 +3,7 @@ import { Poppins } from 'next/font/google';
 import { Footer } from './Footer';
 import { Content } from './Content';
 import classNames from 'classnames';
+import { Header } from './Header';
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -18,6 +19,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         poppins.className
       )}
     >
+      <Header />
       <main
         className="max-h-screen overflow-y-auto"
         style={{ scrollbarGutter: 'stable' }}
